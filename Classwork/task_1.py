@@ -10,23 +10,20 @@ def change_turn():
     global current_player_index
     current_player_index = (current_player_index + 1) % len(players)
 
-def is_word_valid(new_word):
-    if new_word in used_words:
+
+def is_word_valid(word):
+    if word in used_words:
         return False
-    else:
+    if len(used_words) > 0:
         last_word = used_words[-1]
-        if last_word[-1] == 'ь' or last_word[-1] == 'и':
-            if last_word[-2] == new_word[0]:
-                return True
-            else:
-                print("Incorrect word")
+        if last_word[-1] in ["ь", "й", "ы", "ъ"]:
+            if word[0].lower() != last_word[-2].lower():
                 return False
         else:
-            if last_word[-1] == new_word[0]:
-                return True
-            else:
-                print("Incorrect word")
+            if word[0].lower() != last_word[-1].lower():
                 return False
+    return True
+
 
 def play_game():
     print("===== Игра слов =====")
@@ -53,7 +50,7 @@ def play_game():
             print("Слово недопустимо. Попробуйте снова.")
             continue
 
-        used_words.append(word)
+        used_words.append(word.lower())
         print(f"Игрок {current_player} ввел слово '{word}'.")
         change_turn()
 
